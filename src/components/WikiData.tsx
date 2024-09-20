@@ -1,8 +1,13 @@
 import { Button } from "@mui/material";
 import { getWikiData } from "../redux/wiki/wikiActions";
-import { useAppDispatch } from "../hooks";
+import { useAppDispatch, useAppSelector } from "../hooks";
+import { InitialStateWiki } from "../interface";
 
 const WikiData = (): JSX.Element => {
+  const { loading: disabled } = useAppSelector(
+    ({ wiki }: { wiki: InitialStateWiki }) => wiki
+  );
+
   const dispatch = useAppDispatch();
   const fetchData = () => dispatch(getWikiData());
 
@@ -11,7 +16,12 @@ const WikiData = (): JSX.Element => {
       <span className="title">
         On This Day <span className="date">{getToday()}</span>
       </span>
-      <Button onClick={fetchData} variant="contained">
+      <Button
+        size="large"
+        onClick={fetchData}
+        variant="contained"
+        disabled={disabled}
+      >
         Get Data
       </Button>
     </>
